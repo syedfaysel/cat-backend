@@ -38,7 +38,7 @@ export const createCatPost = async (req, res, next) => {
 export const getAllCatPosts = async (req, res, next) => {
   try {
     const posts = await CatPost.find()
-      .populate("cat", "name breed age healthStatus")
+      .populate("cat")
       .populate("currentOwner", "username email contact -password");
 
     res.status(200).json({ success: true, data: posts });
@@ -52,7 +52,7 @@ export const getCatPostById = async (req, res, next) => {
     const { id } = req.params;
 
     const post = await CatPost.findById(id)
-      .populate("cat", "name breed age healthStatus")
+      .populate("cat")
       .populate("currentOwner", "username email contact -password")
       .populate("requests.user", "username email contact -password");
 
