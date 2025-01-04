@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema({
-  name: { type: String },
-  description: { type: String },
-  location: { type: String },
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  location: { type: String, required: true },
 
   hostedBy: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,11 +11,34 @@ const eventSchema = new mongoose.Schema({
     required: true,
   },
 
-  date: {
-    type: Date,
+  date: { type: Date, required: true },
+  createdAt: { type: Date, default: Date.now },
+
+  status: {
+    type: String,
+    enum: ["Active", "Cancelled", "Completed"],
+    default: "Active",
   },
 
-  createdAt: { type: Date, default: Date.now },
+  capacity: { type: Number },
+
+  interested: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+
+  going: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+
+  rsvpDeadline: { type: Date },
+
+  images: [String], // Array of URLs to images
 });
 
 export default mongoose.model("Event", eventSchema);
